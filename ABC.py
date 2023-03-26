@@ -45,9 +45,9 @@ def calibration_delta(listsimu,data):
         listN1.append(N1)
         listN2.append(N2)
     ind1 = np.argsort(listN1)
-    delta1 = max(listsimu[ind1[:(N//100)]])
+    delta1 = max(np.array(listN1)[ind1[:(N//100)]])
     ind2 = np.argsort(listN2)
-    delta2 = max(listsimu[ind2[:(N//100)]])
+    delta2 = max(np.array(listN2)[ind2[:(N//100)]])
     return(delta1,delta2)
 
 ## Simulation des données
@@ -71,8 +71,8 @@ plot_simu2(data_sim)
 ## Simulations
 
 N=10000
-listsimu=[]
-listprior=[]
+#listsimu=[]
+#listprior=[]
 for i in range(N):
     p_prior = sample_prior()
     listprior+=[p_prior]
@@ -80,18 +80,10 @@ for i in range(N):
 
 delta1,delta2=calibration_delta(listsimu,data)
 
-for sim in listsimu:
-    print(Norme_fun(sim,data))
-
-
-
-
-
-
 listW=[]
-for sim in listsimukeep:
+for sim in listsimu:
     (N1,N2) = Norme_fun(sim,data)
-    listW.append(Kd(N1,delta)*Kd(N2,delta))
+    listW.append(Kd(N1,delta1)*Kd(N2,delta2))
 
 posterior_l1=[]
 posterior_l2=[]
@@ -105,8 +97,29 @@ for i in range(N):
     posterior_c+=[ci]
 
 
+
 ## Tracer de la posterior
 
 # Lambda_1
-plt.hist(posterior_l1,weights=listW,bins=30)
+plt.hist(posterior_l1,weights=listW,bins=30,density=True,color='indianred')
+plt.plot([lambda_1,lambda_1],[0,20],'--',color='black')
+plt.title('Estimation pour le paramètre $\lambda_1$')
+plt.show()
+
+# Lambda_2
+plt.hist(posterior_l2,weights=listW,bins=30,density=True,color='slateblue')
+plt.plot([lambda_2,lambda_2],[0,20],'--',color='black')
+plt.title('Estimation pour le paramètre $\lambda_2$')
+plt.show()
+
+# Lambda_3
+plt.hist(posterior_l3,weights=listW,bins=30,density=True,color='seagreen')
+plt.plot([lambda_3,lambda_3],[0,20],'--',color='black')
+plt.title('Estimation pour le paramètre $\lambda_3$')
+plt.show()
+
+# c
+plt.hist(posterior_c,weights=listW,bins=30,density=True,color='coral')
+plt.plot([c,c],[0,20],'--',color='black')
+plt.title('Estimation pour le paramètre $c$')
 plt.show()
