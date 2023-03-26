@@ -70,10 +70,10 @@ plot_simu2(data_sim)
 
 ## Simulations
 
-N=10000
-#listsimu=[]
-#listprior=[]
-for i in range(N):
+N=40000
+listsimu=[]
+listprior=[]
+while len(listsimu)<=N:
     p_prior = sample_prior()
     listprior+=[p_prior]
     listsimu+=[simu(T_max,p_prior,y0)]
@@ -89,7 +89,7 @@ posterior_l1=[]
 posterior_l2=[]
 posterior_l3=[]
 posterior_c=[]
-for i in range(N):
+for i in range(len(listW)):
     (lambda_0i,lambda_1i,lambda_2i,lambda_3i,mu_0i,mu_1i,ci)=listprior[i]
     posterior_l1+=[lambda_1i]
     posterior_l2+=[lambda_2i]
@@ -100,26 +100,27 @@ for i in range(N):
 
 ## Tracer de la posterior
 
-# Lambda_1
-plt.hist(posterior_l1,weights=listW,bins=30,density=True,color='indianred')
-plt.plot([lambda_1,lambda_1],[0,20],'--',color='black')
+
+plt.figure(figsize=(15.,5.))
+plt.suptitle('Estimation des paramètres',fontsize=20)
+
+plt.subplot(2,2,1)
+plt.hist(posterior_l1,weights=listW,color='indianred')
+plt.plot([lambda_1,lambda_1],[0,0.2],'--',color='black')
 plt.title('Estimation pour le paramètre $\lambda_1$')
-plt.show()
 
-# Lambda_2
+plt.subplot(2,2,2)
 plt.hist(posterior_l2,weights=listW,bins=30,density=True,color='slateblue')
-plt.plot([lambda_2,lambda_2],[0,20],'--',color='black')
+plt.plot([lambda_2,lambda_2],[0,40],'--',color='black')
 plt.title('Estimation pour le paramètre $\lambda_2$')
-plt.show()
 
-# Lambda_3
+plt.subplot(2,2,3)
 plt.hist(posterior_l3,weights=listW,bins=30,density=True,color='seagreen')
-plt.plot([lambda_3,lambda_3],[0,20],'--',color='black')
+plt.plot([lambda_3,lambda_3],[0,40],'--',color='black')
 plt.title('Estimation pour le paramètre $\lambda_3$')
-plt.show()
 
-# c
+plt.subplot(2,2,4)
 plt.hist(posterior_c,weights=listW,bins=30,density=True,color='coral')
-plt.plot([c,c],[0,20],'--',color='black')
+#plt.plot([c,c],[0,0.2],'--',color='black')
 plt.title('Estimation pour le paramètre $c$')
 plt.show()

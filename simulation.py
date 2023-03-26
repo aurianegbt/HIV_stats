@@ -159,10 +159,10 @@ def sample_prior():
     mu_0 = 0
     mu_1 = 0
     
-    lambda_1 = np.random.uniform(low=0,high=1)
-    lambda_2 = np.random.uniform(low=0,high=1)
-    lambda_3 = np.random.uniform(low=0,high=1)
-    c = np.random.uniform(low=0,high= 2*10**4)
+    lambda_1 = np.random.uniform(low=0.5,high=0.7)
+    lambda_2 = np.random.uniform(low=0.1,high=0.3)
+    lambda_3 = np.random.uniform(low=0.1,high=0.3)
+    c = np.random.uniform(low=0,high= 2*10**(-4))
     
     p=(lambda_0,lambda_1,lambda_2,lambda_3,mu_0,mu_1,c)
     return(p)
